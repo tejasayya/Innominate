@@ -4,6 +4,7 @@ import connectDB from './db/connectDB.js';
 import cookieParser from 'cookie-parser';
 import userRoutes from './routes/userRoutes.js';
 import postRoutes from './routes/postRoutes.js';
+import {v2 as cloudinary} from "cloudinary";
 
 
 
@@ -14,8 +15,14 @@ const app = express();
 
 const PORT = process.env.PORT || 5000;
 
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
-// create a middleware. What is a middleware? It is a function that has access to the request and response objects. It can execute any code, make changes to the request and response objects, end the request-response cycle, and call the next middleware function in the stack.
+
+// middleware. What is a middleware? It is a function that has access to the request and response objects. It can execute any code, make changes to the request and response objects, end the request-response cycle, and call the next middleware function in the stack.
 //Middleware functions can perform the following tasks:
 //Execute any code.
 //Make changes to the request and the response objects.
