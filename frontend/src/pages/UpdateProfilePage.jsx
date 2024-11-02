@@ -1,38 +1,39 @@
 import {
-	Button,
-	Flex,
-	FormControl,
-	FormLabel,
-	Heading,
-	Input,
-	Stack,
-	useColorModeValue,
-	Avatar,
-	Center,
-} from "@chakra-ui/react";
-import { useRef, useState } from "react";
-import { useRecoilState } from "recoil";
-import userAtom from "../atoms/userAtom";
-import usePreviewImg from "../hooks/usePreviewImg";
-import useShowToast from "../hooks/useShowToast";
-
-export default function UpdateProfilePage() {
-	const [user, setUser] = useRecoilState(userAtom);
-	const [inputs, setInputs] = useState({
-		name: user.name,
+    Button,
+    Flex,
+    FormControl,
+    FormLabel,
+    Heading,
+    Input,
+    Stack,
+    useColorModeValue,
+    Avatar,
+    Center,
+  } from '@chakra-ui/react'
+import { useRef, useState } from 'react'
+import userAtom from '../atoms/userAtom';
+import { useRecoilState } from 'recoil';
+import useShowToast from '../hooks/useShowToast';
+import usePreviewImg from '../hooks/usePreviewImg';
+  
+  
+  export default function UpdateProfilePage() {
+    const [user, setUser] = useRecoilState(userAtom);
+    const [inputs, setInputs] = useState({
+        name: user.name,
 		username: user.username,
 		email: user.email,
 		bio: user.bio,
 		password: "",
-	});
-	const fileRef = useRef(null);
+    })
+    const fileRef = useRef(null);
 	const [updating, setUpdating] = useState(false);
 
 	const showToast = useShowToast();
 
 	const { handleImageChange, imgUrl } = usePreviewImg();
 
-	const handleSubmit = async (e) => {
+    const handleSubmit = async (e) => {
 		e.preventDefault();
 		if (updating) return;
 		setUpdating(true);
@@ -51,14 +52,18 @@ export default function UpdateProfilePage() {
 			}
 			showToast("Success", "Profile updated successfully", "success");
 			setUser(data);
-			localStorage.setItem("user-Innominate", JSON.stringify(data));
+			localStorage.setItem("user-threads", JSON.stringify(data));
 		} catch (error) {
 			showToast("Error", error, "error");
 		} finally {
 			setUpdating(false);
 		}
 	};
-	return (
+
+
+
+    console.log(user, 'user is here')
+    return (
 		<form onSubmit={handleSubmit}>
 			<Flex align={"center"} justify={"center"} my={6}>
 				<Stack
@@ -164,4 +169,4 @@ export default function UpdateProfilePage() {
 			</Flex>
 		</form>
 	);
-}
+  }

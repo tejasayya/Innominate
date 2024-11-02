@@ -1,137 +1,97 @@
-import {
-	Avatar,
-	Box,
-	Flex,
-	Link,
-	Text,
-	VStack,
-	Menu,
-	MenuButton,
-	MenuItem,
-	MenuList,
-	Portal,
-	Button,
-	useToast,
-  } from '@chakra-ui/react';
-import { FaGhost } from "react-icons/fa6";
+import { Avatar, Box, Flex, Link, Menu, MenuButton, MenuItem, MenuList, Portal, Text, useToast, VStack } from "@chakra-ui/react";
 import { CgMoreO } from "react-icons/cg";
-import { useRecoilValue } from "recoil";
-import userAtom from "../atoms/userAtom";
-import { Link as RouterLink } from "react-router-dom";
-import useFollowUnfollow from "../hooks/useFollowUnfollow";
+import { FaGhost } from "react-icons/fa6";
 
-const UserHeader = ({ user }) => {
-	const toast = useToast();
-	const currentUser = useRecoilValue(userAtom); // logged in user
-	const { handleFollowUnfollow, following, updating } = useFollowUnfollow(user);
+const UserHeader = () => {
+  const toast = useToast();
+  const copyURL = () => {
+    navigator.clipboard.writeText(window.location.href).then(()=>{
+      console.log(window)
+      console.log("copied to clipboard");
+      toast({
+        title: "Link Copied",
+        description: "copied to clipboard",
+        type: "info",
+        duration: 2000,
+        isClosable: true
+      });
+    });
+  };
+  return (
+    <VStack gap={4} alignItems={"start"} >
+      <Flex justifyContent={"space-between"} w={"full"}>
 
-	const copyURL = () => {
-		const currentURL = window.location.href;
-		navigator.clipboard.writeText(currentURL).then(() => {
-			toast({
-				title: "Success.",
-				status: "success",
-				description: "Profile link copied.",
-				duration: 3000,
-				isClosable: true,
-			});
-		});
-	};
+        <Box>
+          <Text fontSize={"2xl"} fontWeight={"bold"}>
+            Mark Zuckerburg
+          </Text>
 
-	return (
-		<VStack gap={4} alignItems={"start"}>
-			<Flex justifyContent={"space-between"} w={"full"}>
-				<Box>
-					<Text fontSize={"2xl"} fontWeight={"bold"}>
-						{user.name}
-					</Text>
-					<Flex gap={2} alignItems={"center"}>
-						<Text fontSize={"sm"}>{user.username}</Text>
-						<Text fontSize={"xs"} bg={"gray.dark"} color={"gray.light"} p={1} borderRadius={"full"}>
-							Innominate.net
-						</Text>
-					</Flex>
-				</Box>
-				<Box>
-					{user.profilePic && (
-						<Avatar
-							name={user.name}
-							src={user.profilePic}
-							size={{
-								base: "md",
-								md: "xl",
-							}}
-						/>
-					)}
-					{!user.profilePic && (
-						<Avatar
-							name={user.name}
-							src='https://bit.ly/broken-link'
-							size={{
-								base: "md",
-								md: "xl",
-							}}
-						/>
-					)}
-				</Box>
-			</Flex>
+          <Flex gap={2} alignItems={"center"}>
+            <Text fontSize={"sm"}> @markzukerburg </Text>
+            <Text fontSize={"xs"} bg={"gray.dark"} color={"gray.light"} p={1} borderRadius={"full"} >
+              Innominate.net
+            </Text>  
+          </Flex>
+        
+        </Box>
 
-			<Text>{user.bio}</Text>
+        <Box>
+          <Avatar
+            name = "Mark Zuckerburg"
+            src = "/zuck-avatar.png"
+            size = {{
+              base: "md",
+              md: "xl",
+            }}
+          />
+        </Box>
 
-			{currentUser?._id === user._id && (
-				<Link as={RouterLink} to='/update'>
-					<Button size={"sm"}>Update Profile</Button>
-				</Link>
-			)}
-			{currentUser?._id !== user._id && (
-				<Button size={"sm"} onClick={handleFollowUnfollow} isLoading={updating}>
-					{following ? "Unfollow" : "Follow"}
-				</Button>
-			)}
-			<Flex w={"full"} justifyContent={"space-between"}>
-				<Flex gap={2} alignItems={"center"}>
-					<Text color={"gray.light"}>{user.followers.length} followers</Text>
-					<Box w='1' h='1' bg={"gray.light"} borderRadius={"full"}></Box>
-					<Link color={"gray.light"}>Innominate.com</Link>
-				</Flex>
-				<Flex>
-					<Box className='icon-container'>
-						<FaGhost size={24} cursor={"pointer"} />
-					</Box>
-					<Box className='icon-container'>
-						<Menu>
-							<MenuButton>
-								<CgMoreO size={24} cursor={"pointer"} />
-							</MenuButton>
-							<Portal>
-								<MenuList bg={"gray.dark"}>
-									<MenuItem bg={"gray.dark"} onClick={copyURL}>
-										Copy link
-									</MenuItem>
-								</MenuList>
-							</Portal>
-						</Menu>
-					</Box>
-				</Flex>
-			</Flex>
 
-			<Flex w={"full"}>
-				<Flex flex={1} borderBottom={"1.5px solid white"} justifyContent={"center"} pb='3' cursor={"pointer"}>
-					<Text fontWeight={"bold"}> Innominate </Text>
-				</Flex>
-				<Flex
-					flex={1}
-					borderBottom={"1px solid gray"}
-					justifyContent={"center"}
-					color={"gray.light"}
-					pb='3'
-					cursor={"pointer"}
-				>
-					<Text fontWeight={"bold"}> Replies</Text>
-				</Flex>
-			</Flex>
-		</VStack>
-	);
+      </Flex>
+
+      <Text >Co-Founder, executive chairman and CEO of Meta Platforms.</Text>
+
+      <Flex w={"full"} justifyContent={"space-between"}>
+
+        <Flex gap={2} alignItems={"center"}>
+          <Text color={"gray.light"}>3.2K followers</Text>
+          <Box w="1" h="1" bg={"gray.light"} borderRadius={"full"}> </Box>
+          <Link color={"gray.light"}> Innominate.com </Link>
+        </Flex>
+
+        <Flex gap={3}>
+          <Box className="icon-container">
+            <FaGhost size={24} cursor={"pointer"}/>
+          </Box>
+
+          <Box className="icon-container">
+            <Menu>
+              <MenuButton>
+                <CgMoreO size={24} cursor={"pointer"}/>
+              </MenuButton>
+              <Portal>
+                <MenuList bg={"gray.dark"}>
+                  <MenuItem bg={"gray.dark"} onClick={copyURL}>Copy Link</MenuItem>
+                </MenuList>
+              </Portal>
+            </Menu>
+          </Box>
+
+        </Flex>
+
+      </Flex>
+
+      <Flex w={"full"}>
+        <Flex flex={1} borderBottom={"1.5px solid white"} justifyContent={"center"} pb={3} cursor={"Pointer"}>
+          <Text fontWeight={"bold"}>Innominate</Text>
+        </Flex>
+        <Flex flex={1} borderBottom={"1.5px solid gray"} justifyContent={"center"} color={"gray.light"} pb={3} cursor={"Pointer"}>
+          <Text fontWeight={"bold"}>Replies</Text>
+        </Flex>
+      </Flex>
+
+    </VStack>
+  );
 };
 
 export default UserHeader;

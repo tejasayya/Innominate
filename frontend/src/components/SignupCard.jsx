@@ -50,7 +50,7 @@ export default function SignupCard() {
 				return;
 			}
 
-			localStorage.setItem("user-Innominate", JSON.stringify(data));
+			localStorage.setItem("user-threads", JSON.stringify(data));
 			setUser(data);
 		} catch (error) {
 			showToast("Error", error, "error");
