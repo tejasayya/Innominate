@@ -60,6 +60,7 @@ const Actions = ({ post }) => {
 				prevPosts.map((p) => (p._id === post._id ? { ...p, likes: data.likes } : p))
 			);
 			*/
+			
 
 			if (!liked) {
 				// add the id of the current user to post.likes array

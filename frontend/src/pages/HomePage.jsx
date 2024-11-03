@@ -21,7 +21,7 @@ export default HomePage;
 
 */
 
-
+//-------------------------------------------------
 
 import { Box, Flex, Spinner } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
@@ -35,6 +35,8 @@ const HomePage = () => {
 	const [posts, setPosts] = useRecoilState(postsAtom);
 	const [loading, setLoading] = useState(true);
 	const showToast = useShowToast();
+	// const user = useRecoilValue(userAtom);
+	
 	useEffect(() => {
 		const getFeedPosts = async () => {
 			setLoading(true);
