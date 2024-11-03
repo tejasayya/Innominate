@@ -1,4 +1,4 @@
-/*
+
 import {
 	Box,
 	Button,
@@ -15,7 +15,7 @@ import {
 	Text,
 	useDisclosure,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import useShowToast from "../hooks/useShowToast";
@@ -23,7 +23,7 @@ import postsAtom from "../atoms/postsAtom";
 
 const Actions = ({ post }) => {
 	const user = useRecoilValue(userAtom);
-	const [liked, setLiked] = useState(post.likes.includes(user?._id));
+	const [liked, setLiked] = useState(false);
 	const [posts, setPosts] = useRecoilState(postsAtom);
 	const [isLiking, setIsLiking] = useState(false);
 	const [isReplying, setIsReplying] = useState(false);
@@ -31,6 +31,14 @@ const Actions = ({ post }) => {
 
 	const showToast = useShowToast();
 	const { isOpen, onOpen, onClose } = useDisclosure();
+
+	useEffect(() => {
+		if (post.likes && Array.isArray(post.likes) && user) {
+		  setLiked(post.likes.includes(user._id));
+		} else {
+		  setLiked(false);
+		}
+	  }, [post.likes, user]);
 
 	const handleLikeAndUnlike = async () => {
 		if (!user) return showToast("Error", "You must be logged in to like a post", "error");
@@ -44,7 +52,14 @@ const Actions = ({ post }) => {
 				},
 			});
 			const data = await res.json();
+			// here is the error
 			if (data.error) return showToast("Error", data.error, "error");
+
+			/*
+			setPosts((prevPosts) =>
+				prevPosts.map((p) => (p._id === post._id ? { ...p, likes: data.likes } : p))
+			);
+			*/
 
 			if (!liked) {
 				// add the id of the current user to post.likes array
@@ -152,11 +167,11 @@ const Actions = ({ post }) => {
 
 			<Flex gap={2} alignItems={"center"}>
 				<Text color={"gray.light"} fontSize='sm'>
-					{post.replies.length} replies
+					{post.replies?.length || 0} replies
 				</Text>
 				<Box w={0.5} h={0.5} borderRadius={"full"} bg={"gray.light"}></Box>
 				<Text color={"gray.light"} fontSize='sm'>
-					{post.likes.length} likes
+					{post.likes?.length || 0} likes
 				</Text>
 			</Flex>
 
@@ -241,16 +256,41 @@ const ShareSVG = () => {
 	);
 };
 
-*/
+
 
 //-------------------------
 
+/*
 
+import {Box, Flex, Text} from "@chakra-ui/react";
+import { useState } from "react";
+import { useRecoilValue } from "recoil";
+import userAtom from "../atoms/userAtom";
+import useShowToast from './../hooks/useShowToast';
 
-import {Flex} from "@chakra-ui/react";
-import { PropTypes } from 'prop-types';
+const Actions = ({ post }) => {
 
-const Actions = ({ liked, setLiked }) => {
+	const user = useRecoilValue(userAtom);
+	const [liked, setLiked] = useState(false);
+	const showToast = useShowToast();
+
+	const handleLikeAndUnlike = async () => {
+		if(!user) return showToast('Error', 'You must be logged in to like a post', 'error');
+		try {
+			const res = await fetch(`/api/posts/like/${post._id}`, {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+			const data = await res.json();
+			if(data.error) return showToast('Error', data.error, 'error');
+			console.log(data);
+			
+		} catch (error) {
+			showToast('Error', error.message, 'error');
+		}
+	}
 
     const RepostSVG = () => {
         return (
@@ -317,7 +357,7 @@ const Actions = ({ liked, setLiked }) => {
 					role='img'
 					viewBox='0 0 24 22'
 					width='20'
-					onClick={() => setLiked(!liked)}
+					onClick={handleLikeAndUnlike}
 				>
 					<path
 						d='M1 7.66c0 4.575 3.899 9.086 9.987 12.934.338.203.74.406 1.013.406.283 0 .686-.203 1.013-.406C19.1 16.746 23 12.234 23 7.66 23 3.736 20.245 1 16.672 1 14.603 1 12.98 1.94 12 3.352 11.042 1.952 9.408 1 7.328 1 3.766 1 1 3.736 1 7.66Z'
@@ -326,16 +366,7 @@ const Actions = ({ liked, setLiked }) => {
 					></path>
 				</svg>
 
-				<svg
-					aria-label='Comment'
-					color=''
-					fill=''
-					height='20'
-					role='img'
-					viewBox='0 0 24 24'
-					width='20'
-
-				>
+				<svg aria-label='Comment' color='' fill='' height='20' role='img' 	viewBox='0 0 24 24'	width='20'>
 					<title>Comment</title>
 					<path
 						d='M20.656 17.008a9.993 9.993 0 1 0-3.59 3.615L22 22Z'
@@ -352,15 +383,22 @@ const Actions = ({ liked, setLiked }) => {
 				
 			</Flex>
 
+
+			<Flex gap={2} alignItems={"center"}>
+				<Text color={"gray.light"} fontSize='sm'>
+					{post.replies.length} replies
+				</Text>
+				<Box w={0.5} h={0.5} borderRadius={"full"} bg={"gray.light"}></Box>
+				<Text color={"gray.light"} fontSize='sm'>
+					{post.likes.length} likes
+				</Text>
+			</Flex>
+
 	
 		</Flex>
   );
 };
 
-Actions.propTypes = {
-    liked: PropTypes.arrayOf(PropTypes.string).isRequired,
-    setLiked: PropTypes.func.isRequired
-}
-
 export default Actions
 
+*/

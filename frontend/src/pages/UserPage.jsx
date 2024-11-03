@@ -1,4 +1,4 @@
-
+/*
 import { useEffect, useState } from 'react';
 import UserPost from '../components/UserPost';
 import UserHeader from './../components/UserHeader';
@@ -68,8 +68,14 @@ const UserPage = () => {
 
 export default UserPage;
 
+*/
 
-/*
+
+//------------------------
+
+
+
+
 
 
 import { useEffect, useState } from "react";
@@ -139,4 +145,3 @@ const UserPage = () => {
 
 export default UserPage;
 
-*/

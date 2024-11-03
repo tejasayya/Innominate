@@ -89,8 +89,15 @@ const likeUnlikePost = async (req, res) => {
 			return res.status(404).json({ error: "Post not found" });
 		}
 
-		const userLikedPost = post.likes.includes(userId);
+		if (!Array.isArray(post.likes)) {
+			post.likes = [];
+		  }
 
+		// const userLikedPost = post.likes.includes(userId);
+
+		const userLikedPost = post.likes.some((id) => id.toString() === userId.toString());
+
+		/*
 		if (userLikedPost) {
 			// Unlike post
 			await Post.updateOne({ _id: postId }, { $pull: { likes: userId } });
@@ -100,7 +107,18 @@ const likeUnlikePost = async (req, res) => {
 			post.likes.push(userId);
 			await post.save();
 			res.status(200).json({ message: "Post liked successfully" });
-		}
+		}*/
+		if (userLikedPost) {
+			// Unlike post
+			post.likes = post.likes.filter((id) => id.toString() !== userId.toString());
+			await post.save();
+			res.status(200).json({ message: "Post unliked successfully", likes: post.likes });
+		  } else {
+			// Like post
+			post.likes.push(userId);
+			await post.save();
+			res.status(200).json({ message: "Post liked successfully", likes: post.likes });
+		  }
 	} catch (err) {
 		res.status(500).json({ error: err.message });
 	}
