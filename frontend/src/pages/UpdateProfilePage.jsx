@@ -52,7 +52,7 @@ import usePreviewImg from '../hooks/usePreviewImg';
 			}
 			showToast("Success", "Profile updated successfully", "success");
 			setUser(data);
-			localStorage.setItem("user-threads", JSON.stringify(data));
+			localStorage.setItem("user-Innominate", JSON.stringify(data));
 		} catch (error) {
 			showToast("Error", error, "error");
 		} finally {
