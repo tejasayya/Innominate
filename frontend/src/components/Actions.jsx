@@ -15,7 +15,6 @@ import {
 	Text,
 	useDisclosure,
 } from "@chakra-ui/react";
-import PropTypes from "prop-types";
 import { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
@@ -187,14 +186,6 @@ const Actions = ({ post }) => {
 	);
 };
 
-Actions.propTypes = {
-    post: PropTypes.shape({
-        _id: PropTypes.string.isRequired,
-        likes: PropTypes.arrayOf(PropTypes.string).isRequired,
-        replies: PropTypes.arrayOf(PropTypes.object).isRequired,
-    }).isRequired,
-}
-
 export default Actions;
 
 const RepostSVG = () => {
@@ -249,7 +240,12 @@ const ShareSVG = () => {
 		</svg>
 	);
 };
+
 */
+
+//-------------------------
+
+
 
 import {Flex} from "@chakra-ui/react";
 import { PropTypes } from 'prop-types';
@@ -362,8 +358,9 @@ const Actions = ({ liked, setLiked }) => {
 };
 
 Actions.propTypes = {
-    liked: PropTypes.bool.isRequired,
+    liked: PropTypes.arrayOf(PropTypes.string).isRequired,
     setLiked: PropTypes.func.isRequired
 }
 
 export default Actions
+

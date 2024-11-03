@@ -30,7 +30,7 @@ cloudinary.config({
 //Call the next middleware function in the stack.
 //If the current middleware function does not end the request-response cycle, it must call next() to pass control to the next middleware function. Otherwise, the request will be left hanging.
 
-app.use(express.json()); // To parse the incoming request req.body with JSON payloads
+app.use(express.json({limit:"50mb"})); // To parse the incoming request req.body with JSON payloads
 app.use(express.urlencoded({ extended: true })); // To parse the incoming request with urlencoded payloads
 app.use(cookieParser()); // To parse the incoming cookies
 
