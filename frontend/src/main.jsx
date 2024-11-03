@@ -33,6 +33,7 @@ const colors = {
 const theme = extendTheme({ config, styles, colors })
 
 createRoot(document.getElementById('root')).render(
+  // React strict mode renders every component twice to detect side effects
   <StrictMode>
     <RecoilRoot>
 

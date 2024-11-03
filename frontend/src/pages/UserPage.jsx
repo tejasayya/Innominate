@@ -20,7 +20,7 @@ const UserPage = () => {
             showToast("Error", data.error, "error");
             return;
           };
-          setUser(data.user);
+          setUser(data);
         } catch (err) {
           showToast("Error", err, "error");
           
@@ -29,9 +29,9 @@ const UserPage = () => {
 
       getUser();
 
-    }, [username]);
+    }, [username, showToast]);
 
-
+    if(!user)return null;
 
   
 

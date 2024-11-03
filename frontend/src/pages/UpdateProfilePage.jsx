@@ -25,7 +25,7 @@ import usePreviewImg from '../hooks/usePreviewImg';
 		email: user.email,
 		bio: user.bio,
 		password: "",
-    })
+    });
     const fileRef = useRef(null);
 	const [updating, setUpdating] = useState(false);
 
