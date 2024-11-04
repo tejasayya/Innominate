@@ -21,7 +21,7 @@ const useLogout = () => {
 				return;
 			}
 
-			localStorage.removeItem("user-tInnominate");
+			localStorage.removeItem("user-Innominate");
 			setUser(null);
 		} catch (error) {
 			showToast("Error", error, "error");

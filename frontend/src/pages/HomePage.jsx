@@ -29,7 +29,7 @@ import useShowToast from "../hooks/useShowToast";
 import Post from "../components/Post";
 import { useRecoilState } from "recoil";
 import postsAtom from "../atoms/postsAtom";
-import SuggestedUsers from "../components/SuggestedUsers";
+// import SuggestedUsers from "../components/SuggestedUsers";
 
 const HomePage = () => {
 	const [posts, setPosts] = useRecoilState(postsAtom);
@@ -42,14 +42,46 @@ const HomePage = () => {
 			setLoading(true);
 			setPosts([]);
 			try {
-				const res = await fetch("/api/posts/feed");
+				
+				
+				//-
+				const res = await fetch("/api/posts/feed", {
+					headers: {
+					  "Content-Type": "application/json",
+					},
+					credentials: "include", // Include cookies
+				  });
+			
+				  // Check if the response is OK
+				  if (!res.ok) {
+					const errorText = await res.text();
+					console.error("Error fetching feed:", res.status, res.statusText, errorText);
+					showToast("Error", "Failed to fetch feed", "error");
+					setPosts([]);
+					return;
+				  }
+
+
+
+
 				const data = await res.json();
+				console.log('data received: ', data);//
+
 				if (data.error) {
 					showToast("Error", data.error, "error");
+					setPosts([]);
 					return;
 				}
-				console.log(data);
-				setPosts(data);
+
+				//--
+				if (Array.isArray(data)) {
+					setPosts(data);
+				  } else {
+					showToast("Error", "Unexpected response from server", "error");
+					setPosts([]);
+				  }
+
+
 			} catch (error) {
 				showToast("Error", error.message, "error");
 			} finally {
@@ -81,7 +113,7 @@ const HomePage = () => {
 					md: "block",
 				}}
 			>
-				<SuggestedUsers />
+				{/* <SuggestedUsers /> */}
 			</Box>
 		</Flex>
 	);

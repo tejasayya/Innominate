@@ -55,15 +55,41 @@ import PostPage from './pages/PostPage';
 import HomePage from './pages/HomePage';
 import AuthPage from './pages/AuthPage';
 import userAtom from './atoms/userAtom';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import UpdateProfilePage from './pages/UpdateProfilePage';
 import CreatePost from './components/CreatePost';
 import ChatPage from './pages/ChatPage';
 import { SettingsPage } from './pages/SettingsPage';
+import { useEffect } from 'react';
 
 
 function App() {
-	const user = useRecoilValue(userAtom);
+	// const user = useRecoilValue(userAtom);
+
+	const [user, setUser] = useRecoilState(userAtom);
+
+	useEffect(() => {
+		const checkAuth = async () => {
+		try {
+			const res = await fetch("/api/auth/check", {
+			credentials: "include",
+			});
+			if (res.ok) {
+			const data = await res.json();
+			setUser(data.user);
+			} else {
+			setUser(null);
+			}
+		} catch (error) {
+			console.error("Error checking authentication:", error);
+			setUser(null);
+		}
+		};
+
+		checkAuth();
+	}, [setUser]);
+
+
 	const { pathname } = useLocation();
 	return (
 		<Box position={"relative"} w='full'>
@@ -88,7 +114,7 @@ function App() {
 						}
 					/>
 					<Route path='/:username/post/:pid' element={<PostPage />} />
-          <Route path="/anonymous" element={<Anonymous /> }/>
+          			<Route path="/anonymous" element={<Anonymous /> }/>
 					<Route path='/chat' element={user ? <ChatPage /> : <Navigate to={"/auth"} />} />
 					<Route path='/settings' element={user ? <SettingsPage /> : <Navigate to={"/auth"} />} />
 				</Routes>
