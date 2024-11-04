@@ -49,7 +49,17 @@ const MessageInput = ({ setMessages }) => {
 					recipientId: selectedConversation.userId,
 					img: imgUrl,
 				}),
+				credentials: "include",
 			});
+
+			//--
+			if (!res.ok) {
+				const errorText = await res.text();
+				console.error("Error sending message:", res.status, res.statusText, errorText);
+				showToast("Error", "Failed to send message", "error");
+				return;
+			}
+
 			const data = await res.json();
 			if (data.error) {
 				showToast("Error", data.error, "error");

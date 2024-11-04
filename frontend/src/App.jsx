@@ -55,17 +55,17 @@ import PostPage from './pages/PostPage';
 import HomePage from './pages/HomePage';
 import AuthPage from './pages/AuthPage';
 import userAtom from './atoms/userAtom';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import UpdateProfilePage from './pages/UpdateProfilePage';
 import CreatePost from './components/CreatePost';
 import ChatPage from './pages/ChatPage';
 import { SettingsPage } from './pages/SettingsPage';
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 
 
 function App() {
-	// const user = useRecoilValue(userAtom);
-
+	const user = useRecoilValue(userAtom);
+/*
 	const [user, setUser] = useRecoilState(userAtom);
 
 	useEffect(() => {
@@ -88,7 +88,7 @@ function App() {
 
 		checkAuth();
 	}, [setUser]);
-
+*/
 
 	const { pathname } = useLocation();
 	return (

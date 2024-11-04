@@ -42,24 +42,24 @@ const HomePage = () => {
 			setLoading(true);
 			setPosts([]);
 			try {
-				
+				const res = await fetch("/api/posts/feed");
 				
 				//-
-				const res = await fetch("/api/posts/feed", {
-					headers: {
-					  "Content-Type": "application/json",
-					},
-					credentials: "include", // Include cookies
-				  });
+				// const res = await fetch("/api/posts/feed", {
+				// 	headers: {
+				// 	  "Content-Type": "application/json",
+				// 	},
+				// 	credentials: "include", // Include cookies
+				//   });
 			
-				  // Check if the response is OK
-				  if (!res.ok) {
-					const errorText = await res.text();
-					console.error("Error fetching feed:", res.status, res.statusText, errorText);
-					showToast("Error", "Failed to fetch feed", "error");
-					setPosts([]);
-					return;
-				  }
+				//   // Check if the response is OK
+				//   if (!res.ok) {
+				// 	const errorText = await res.text();
+				// 	console.error("Error fetching feed:", res.status, res.statusText, errorText);
+				// 	showToast("Error", "Failed to fetch feed", "error");
+				// 	setPosts([]);
+				// 	return;
+				//   }
 
 
 
@@ -74,14 +74,15 @@ const HomePage = () => {
 				}
 
 				//--
-				if (Array.isArray(data)) {
-					setPosts(data);
-				  } else {
-					showToast("Error", "Unexpected response from server", "error");
-					setPosts([]);
-				  }
+				// if (Array.isArray(data)) {
+				// 	setPosts(data);
+				//   } else {
+				// 	showToast("Error", "Unexpected response from server", "error");
+				// 	setPosts([]);
+				//   }
 
-
+				console.log(data);
+				setPosts(data);
 			} catch (error) {
 				showToast("Error", error.message, "error");
 			} finally {
